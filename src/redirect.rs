@@ -92,14 +92,18 @@ pub fn permanent(uri: impl AsLocation) -> impl Reply {
     )
 }
 
-mod sealed {
+/// Trait for redirect locations
+pub mod sealed {
     use bytes::Bytes;
     use http::{header::HeaderValue, Uri};
 
-    // These sealed traits are to allow adding possibly new impls so other
-    // arguments could be accepted, like maybe just `warp::redirect("/v2")`.
+    /// A trait to mark something can be redirected to.
     pub trait AsLocation: Sealed {}
+
+    /// This sealed trait exists to allow adding possibly new impls so other
+    /// arguments could be accepted, like maybe just `warp::redirect("/v2")`.
     pub trait Sealed {
+        /// Convert it to a `HeaderValue`.
         fn header_value(self) -> HeaderValue;
     }
 
